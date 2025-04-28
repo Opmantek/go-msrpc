@@ -67,7 +67,8 @@ func init() {
 func main() {
 
 	if err := config_flag.ParseAndValidate(cfg, flag.CommandLine); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, err)		
+		fmt.Println("\nVersion 1.0.2\n")
 		return
 	}
 
@@ -75,11 +76,25 @@ func main() {
 		gssapi.AddMechanism(mech)
 	}
 
+	// allow username and password from ENV to override so cli option doesn't have to be used
+	username := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
+
+	// fmt.Fprintln(os.Stdout, "checking username and password",username,password);
+	if username != "" && password != "" {
+		// fmt.Fprintln(os.Stdout, "setting username",username);
+		cfg.Username = username
+
+		// fmt.Fprintln(os.Stdout, "setting password",password);
+		cfg.Credential.Password = password
+	}
+	
+
 	for _, cred := range cfg.Credentials() {
 		gssapi.AddCredential(cred)
 	}
 
-	startTime := time.Now()
+	// startTime := time.Now()
 
 	ctx := gssapi.NewSecurityContext(context.Background())
 
@@ -89,7 +104,7 @@ func main() {
 	cc, err := dcerpc.Dial(ctx, cfg.ServerAddr(), cfg.DialOptions(ctx)...)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "dial_well_known_endpoint", err)
-		return
+		os.Exit(1)
 	}
 
 	defer cc.Close(ctx)
@@ -98,21 +113,21 @@ func main() {
 	cli, err := iobjectexporter.NewObjectExporterClient(ctx, cc, cfg.ClientOptions(ctx)...)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_object_exporter", err)
-		return
+		os.Exit(2)
 	}
 
 	// server-alive to determine the bindings.
 	srv, err := cli.ServerAlive2(ctx, &iobjectexporter.ServerAlive2Request{})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "server_alive2", err)
-		return
+		os.Exit(3)
 	}
 
 	// new activation-client.
 	iact, err := iactivation.NewActivationClient(ctx, cc, cfg.ClientOptions(ctx)...)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_activation_client", err)
-		return
+		os.Exit(4)
 	}
 
 	// activate the WMI interface.
@@ -126,7 +141,7 @@ func main() {
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "remote_activation", err)
-		return
+		os.Exit(5)
 	}
 
 	if act.HResult != 0 {
@@ -138,7 +153,7 @@ func main() {
 	wcc, err := dcerpc.Dial(ctx, cfg.ServerAddr(), append(cfg.DialOptions(ctx), act.OXIDBindings.EndpointsByProtocol("ncacn_ip_tcp")...)...)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "dial_wmi_endpoint", err)
-		return
+		os.Exit(6)
 	}
 
 	defer wcc.Close(ctx)
@@ -161,14 +176,14 @@ func main() {
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		return
+		os.Exit(7)
 	}
 
 	// start services client.
 	svcs, err := iwbemservices.NewServicesClient(ctx, wcc, dcom.WithIPID(login.Namespace.InterfacePointer().IPID()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_services_client", err)
-		return
+		os.Exit(8)
 	}
 
 	flags := wmi.QueryFlagType(0)
@@ -181,7 +196,7 @@ func main() {
 		flags |= wmi.QueryFlagType(wmi.GenericFlagTypeForwardOnly)
 	}
 
-	now := time.Now()
+	// now := time.Now()
 
 	enum, err := svcs.ExecQuery(ctx, &iwbemservices.ExecQueryRequest{
 		This:          &dcom.ORPCThis{Version: srv.COMVersion},
@@ -191,14 +206,14 @@ func main() {
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "wmi_exec_query", query, err)
-		return
+		os.Exit(9)
 	}
 
 	if !forward {
 		enums, err := ienumwbemclassobject.NewEnumClassObjectClient(ctx, wcc, dcom.WithIPID(enum.Enum.InterfacePointer().IPID()))
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			return
+			os.Exit(10)
 		}
 
 		_, err = enums.Reset(ctx, &ienumwbemclassobject.ResetRequest{
@@ -206,7 +221,7 @@ func main() {
 		})
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "wmi_enum_reset", err)
-			return
+			os.Exit(11)
 		}
 	}
 
@@ -214,7 +229,7 @@ func main() {
 		dcom.WithIPID(act.RemoteUnknown))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_remote_unknown2_client", err)
-		return
+		os.Exit(12)
 	}
 
 	qif, err := irem.RemoteQueryInterface2(ctx, &iremunknown2.RemoteQueryInterface2Request{
@@ -224,13 +239,13 @@ func main() {
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "query_wco_smartenum_fetcher_interface", err)
-		return
+		os.Exit(13)
 	}
 
 	smart, err := iwbemfetchsmartenum.NewFetchSmartEnumClient(ctx, wcc, dcom.WithIPID(qif.Interface[0].IPID()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_fetch_smart_enum_client", err)
-		return
+		os.Exit(14)
 	}
 
 	smartenum, err := smart.GetSmartEnum(ctx, &iwbemfetchsmartenum.GetSmartEnumRequest{
@@ -238,13 +253,13 @@ func main() {
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "fetch_smart_enum", err)
-		return
+		os.Exit(15)
 	}
 
 	wco, err := iwbemwcosmartenum.NewWCOSmartEnumClient(ctx, wcc, dcom.WithIPID(smartenum.SmartEnum.InterfacePointer().IPID()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "new_wco_smart_enum_client", err)
-		return
+		os.Exit(16)
 	}
 
 	if limit > 0 && limit < page {
@@ -255,7 +270,8 @@ func main() {
 	var classes = make(map[string]*wmio.Class)
 
 	count, buffer := 0, 0
-
+	// always return json array, start it now
+	fmt.Println("[");
 	for i := 0; limit == 0 || i < limit; i += page {
 
 		ret, err := wco.Next(ctx, &iwbemwcosmartenum.NextRequest{
@@ -279,8 +295,16 @@ func main() {
 			fmt.Fprintln(os.Stderr, "unmarshal_object_array_with_class", err)
 			return
 		}
-
-		for _, po := range oa.Objects {
+		
+		// if we're in the next page we need a comma
+		if i > 0 {
+				fmt.Println(",");
+		}
+		for j, po := range oa.Objects {
+			// if we're in the next object we need a comma
+			if j > 0 {
+				fmt.Println(",");
+			}
 			if po.Object.Class != nil {
 				fmt.Println(J(po.Object.Properties()))
 			} else {
@@ -291,12 +315,15 @@ func main() {
 		count += len(oa.Objects)
 		buffer += len(ret.Buffer)
 	}
+	// end json array
+	fmt.Println("]");
 
-	fmt.Fprintln(os.Stderr, "buffer fetched:", buffer/1024, "KiB")
-	fmt.Fprintln(os.Stderr, "records fetched:", count)
-	fmt.Fprintln(os.Stderr, "query execution time:", time.Now().Sub(now))
-	fmt.Fprintln(os.Stderr, "script execution time:", time.Now().Sub(startTime))
-	PrintMemUsage()
+
+	// fmt.Fprintln(os.Stderr, "buffer fetched:", buffer/1024, "KiB")
+	// fmt.Fprintln(os.Stderr, "records fetched:", count)
+	// fmt.Fprintln(os.Stderr, "query execution time:", time.Now().Sub(now))
+	// fmt.Fprintln(os.Stderr, "script execution time:", time.Now().Sub(startTime))
+	// PrintMemUsage()
 
 }
 
