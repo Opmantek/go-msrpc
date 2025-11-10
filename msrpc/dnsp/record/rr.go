@@ -22,11 +22,7 @@ func (o *NodeName) MarshalJSON() ([]byte, error) {
 }
 
 func (o *NodeName) String() string {
-	n := string(o.DNSName)
-	if n == "" {
-		return "."
-	}
-	return n
+	return string(o.DNSName)
 }
 
 func (o *NodeText) MarshalJSON() ([]byte, error) {
@@ -38,7 +34,7 @@ func (o *NodeText) String() string {
 }
 
 func (o *RecordString) StringAt(i int) string {
-	if len(o.Data) < i {
+	if len(o.Data) <= i {
 		return ""
 	}
 	return strings.Trim(string(o.Data[i].Text), "\u0000")

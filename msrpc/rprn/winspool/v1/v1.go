@@ -883,10 +883,11 @@ type GDI dcetypes.ContextHandle
 func (o *GDI) ContextHandle() *dcetypes.ContextHandle { return (*dcetypes.ContextHandle)(o) }
 
 func (o *GDI) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -933,10 +934,11 @@ type Printer dcetypes.ContextHandle
 func (o *Printer) ContextHandle() *dcetypes.ContextHandle { return (*dcetypes.ContextHandle)(o) }
 
 func (o *Printer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -989,10 +991,11 @@ type Size struct {
 }
 
 func (o *Size) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1046,10 +1049,11 @@ type Rectangle struct {
 }
 
 func (o *Rectangle) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1771,10 +1775,11 @@ type DevMode struct {
 }
 
 func (o *DevMode) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -2072,10 +2077,11 @@ type DocInfo1 struct {
 }
 
 func (o *DocInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -2197,10 +2203,11 @@ type DriverInfo1 struct {
 }
 
 func (o *DriverInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -2277,10 +2284,11 @@ type DriverInfo2 struct {
 }
 
 func (o *DriverInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -2451,13 +2459,14 @@ type DriverInfo3 struct {
 }
 
 func (o *DriverInfo3) xxx_PreparePayload(ctx context.Context) error {
-	if o.DependentFiles != "" && o.DependentFilesLength == 0 {
-		o.DependentFilesLength = uint32(len(o.DependentFiles))
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if o.DependentFiles != "" && o.DependentFilesLength == 0 {
+		o.DependentFilesLength = uint32(ndr.UTF16Len(o.DependentFiles))
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -2779,16 +2788,17 @@ type DriverInfo4 struct {
 }
 
 func (o *DriverInfo4) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.DependentFiles != "" && o.DependentFilesLength == 0 {
-		o.DependentFilesLength = uint32(len(o.DependentFiles))
+		o.DependentFilesLength = uint32(ndr.UTF16Len(o.DependentFiles))
 	}
 	if o.PreviousNames != "" && o.PreviousNamesLength == 0 {
-		o.PreviousNamesLength = uint32(len(o.PreviousNames))
+		o.PreviousNamesLength = uint32(ndr.UTF16Len(o.PreviousNames))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -3190,16 +3200,17 @@ type DriverInfo6 struct {
 }
 
 func (o *DriverInfo6) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.DependentFiles != "" && o.DependentFilesLength == 0 {
-		o.DependentFilesLength = uint32(len(o.DependentFiles))
+		o.DependentFilesLength = uint32(ndr.UTF16Len(o.DependentFiles))
 	}
 	if o.PreviousNames != "" && o.PreviousNamesLength == 0 {
-		o.PreviousNamesLength = uint32(len(o.PreviousNames))
+		o.PreviousNamesLength = uint32(ndr.UTF16Len(o.PreviousNames))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -3802,22 +3813,23 @@ type DriverInfo8 struct {
 }
 
 func (o *DriverInfo8) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.DependentFiles != "" && o.DependentFilesLength == 0 {
-		o.DependentFilesLength = uint32(len(o.DependentFiles))
+		o.DependentFilesLength = uint32(ndr.UTF16Len(o.DependentFiles))
 	}
 	if o.PreviousNames != "" && o.PreviousNamesLength == 0 {
-		o.PreviousNamesLength = uint32(len(o.PreviousNames))
+		o.PreviousNamesLength = uint32(ndr.UTF16Len(o.PreviousNames))
 	}
 	if o.ColorProfiles != "" && o.ColorProfilesLength == 0 {
-		o.ColorProfilesLength = uint32(len(o.ColorProfiles))
+		o.ColorProfilesLength = uint32(ndr.UTF16Len(o.ColorProfiles))
 	}
 	if o.CoreDriverDependencies != "" && o.CoreDependenciesLength == 0 {
-		o.CoreDependenciesLength = uint32(len(o.CoreDriverDependencies))
+		o.CoreDependenciesLength = uint32(ndr.UTF16Len(o.CoreDriverDependencies))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -4592,10 +4604,11 @@ type FormInfo1 struct {
 }
 
 func (o *FormInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -4737,10 +4750,11 @@ type FormInfo2 struct {
 }
 
 func (o *FormInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -4959,10 +4973,11 @@ type JobInfo1 struct {
 }
 
 func (o *JobInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -5238,10 +5253,11 @@ type JobInfo2 struct {
 }
 
 func (o *JobInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -5637,10 +5653,11 @@ type JobInfo3 struct {
 }
 
 func (o *JobInfo3) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -5733,10 +5750,11 @@ type JobInfo4 struct {
 }
 
 func (o *JobInfo4) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6132,10 +6150,11 @@ type MonitorInfo1 struct {
 }
 
 func (o *MonitorInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6214,10 +6233,11 @@ type MonitorInfo2 struct {
 }
 
 func (o *MonitorInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6339,10 +6359,11 @@ type PortInfo1 struct {
 }
 
 func (o *PortInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6439,10 +6460,11 @@ type PortInfo2 struct {
 }
 
 func (o *PortInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6620,10 +6642,11 @@ type PortInfo3 struct {
 }
 
 func (o *PortInfo3) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6703,10 +6726,11 @@ type PortInfo255 struct {
 }
 
 func (o *PortInfo255) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -6874,10 +6898,11 @@ type PrinterInfoStress struct {
 }
 
 func (o *PrinterInfoStress) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -7164,10 +7189,11 @@ type PrinterInfo1 struct {
 }
 
 func (o *PrinterInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -7346,10 +7372,11 @@ type PrinterInfo2 struct {
 }
 
 func (o *PrinterInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -7737,10 +7764,11 @@ type PrinterInfo3 struct {
 }
 
 func (o *PrinterInfo3) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -7795,10 +7823,11 @@ type PrinterInfo4 struct {
 }
 
 func (o *PrinterInfo4) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -7919,10 +7948,11 @@ type PrinterInfo5 struct {
 }
 
 func (o *PrinterInfo5) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8041,10 +8071,11 @@ type PrinterInfo6 struct {
 }
 
 func (o *PrinterInfo6) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8137,10 +8168,11 @@ type PrinterInfo7 struct {
 }
 
 func (o *PrinterInfo7) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8226,10 +8258,11 @@ type PrinterInfo8 struct {
 }
 
 func (o *PrinterInfo8) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8263,10 +8296,11 @@ type PrinterInfo9 struct {
 }
 
 func (o *PrinterInfo9) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8310,10 +8344,11 @@ type ClientInfo1 struct {
 }
 
 func (o *ClientInfo1) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8429,10 +8464,11 @@ type ClientInfo2 struct {
 }
 
 func (o *ClientInfo2) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8485,10 +8521,11 @@ type ClientInfo3 struct {
 }
 
 func (o *ClientInfo3) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8620,13 +8657,14 @@ type DevModeContainer struct {
 }
 
 func (o *DevModeContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.DevMode != nil && o.BufferLength == 0 {
 		o.BufferLength = uint32(len(o.DevMode))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8728,10 +8766,11 @@ type DocInfoContainer struct {
 }
 
 func (o *DocInfoContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -8934,10 +8973,11 @@ type DriverContainer struct {
 }
 
 func (o *DriverContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -9516,10 +9556,11 @@ type FormContainer struct {
 }
 
 func (o *FormContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -9800,10 +9841,11 @@ type JobContainer struct {
 }
 
 func (o *JobContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -10232,10 +10274,11 @@ type MonitorContainer struct {
 }
 
 func (o *MonitorContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -10516,10 +10559,11 @@ type PortContainer struct {
 }
 
 func (o *PortContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -10950,13 +10994,14 @@ type PortVarContainer struct {
 }
 
 func (o *PortVarContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.MonitorData != nil && o.MonitorDataLength == 0 {
 		o.MonitorDataLength = uint32(len(o.MonitorData))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -11059,10 +11104,11 @@ type PrinterContainer struct {
 }
 
 func (o *PrinterContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -11945,13 +11991,14 @@ type BinaryContainer struct {
 }
 
 func (o *BinaryContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.String != nil && o.BufferLength == 0 {
 		o.BufferLength = uint32(len(o.String))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -12053,10 +12100,11 @@ type BIDIData struct {
 }
 
 func (o *BIDIData) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -12455,10 +12503,11 @@ type BIDIRequestData struct {
 }
 
 func (o *BIDIRequestData) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -12545,10 +12594,11 @@ type BIDIResponseData struct {
 }
 
 func (o *BIDIResponseData) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -12638,36 +12688,20 @@ type BIDIRequestContainer struct {
 }
 
 func (o *BIDIRequestContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Data != nil && o.Count == 0 {
 		o.Count = uint32(len(o.Data))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
-}
-
-func (o *BIDIRequestContainer) NDRSizeInfo() []uint64 {
-	dimSize1 := uint64(o.Count)
-	return []uint64{
-		dimSize1,
-	}
 }
 func (o *BIDIRequestContainer) MarshalNDR(ctx context.Context, w ndr.Writer) error {
 	if err := o.xxx_PreparePayload(ctx); err != nil {
 		return err
-	}
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for sz1 := range sizeInfo {
-			if err := w.WriteSize(sizeInfo[sz1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
 	}
 	if err := w.WriteAlign(9); err != nil {
 		return err
@@ -12681,42 +12715,48 @@ func (o *BIDIRequestContainer) MarshalNDR(ctx context.Context, w ndr.Writer) err
 	if err := w.WriteData(o.Count); err != nil {
 		return err
 	}
-	if err := w.WriteTrailingGap(9); err != nil {
-		return err
-	}
-	for i1 := range o.Data {
-		i1 := i1
-		if uint64(i1) >= sizeInfo[0] {
-			break
-		}
-		if o.Data[i1] != nil {
-			if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+	if o.Data != nil || o.Count > 0 {
+		_ptr_aData := ndr.MarshalNDRFunc(func(ctx context.Context, w ndr.Writer) error {
+			dimSize1 := uint64(o.Count)
+			if err := w.WriteSize(dimSize1); err != nil {
 				return err
 			}
-		} else {
-			if err := (&BIDIRequestData{}).MarshalNDR(ctx, w); err != nil {
-				return err
+			sizeInfo := []uint64{
+				dimSize1,
 			}
+			for i1 := range o.Data {
+				i1 := i1
+				if uint64(i1) >= sizeInfo[0] {
+					break
+				}
+				if o.Data[i1] != nil {
+					if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				} else {
+					if err := (&BIDIRequestData{}).MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				}
+			}
+			for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
+				if err := (&BIDIRequestData{}).MarshalNDR(ctx, w); err != nil {
+					return err
+				}
+			}
+			return nil
+		})
+		if err := w.WritePointer(&o.Data, _ptr_aData); err != nil {
+			return err
 		}
-	}
-	for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
-		if err := (&BIDIRequestData{}).MarshalNDR(ctx, w); err != nil {
+	} else {
+		if err := w.WritePointer(nil); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 func (o *BIDIRequestContainer) UnmarshalNDR(ctx context.Context, w ndr.Reader) error {
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for i1 := range sizeInfo {
-			if err := w.ReadSize(&sizeInfo[i1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
-	}
 	if err := w.ReadAlign(9); err != nil {
 		return err
 	}
@@ -12729,25 +12769,37 @@ func (o *BIDIRequestContainer) UnmarshalNDR(ctx context.Context, w ndr.Reader) e
 	if err := w.ReadData(&o.Count); err != nil {
 		return err
 	}
-	if err := w.ReadTrailingGap(9); err != nil {
+	_ptr_aData := ndr.UnmarshalNDRFunc(func(ctx context.Context, w ndr.Reader) error {
+		sizeInfo := []uint64{
+			0,
+		}
+		for sz1 := range sizeInfo {
+			if err := w.ReadSize(&sizeInfo[sz1]); err != nil {
+				return err
+			}
+		}
+		// XXX: for opaque unmarshaling
+		if o.Count > 0 && sizeInfo[0] == 0 {
+			sizeInfo[0] = uint64(o.Count)
+		}
+		if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
+			return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
+		}
+		o.Data = make([]*BIDIRequestData, sizeInfo[0])
+		for i1 := range o.Data {
+			i1 := i1
+			if o.Data[i1] == nil {
+				o.Data[i1] = &BIDIRequestData{}
+			}
+			if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	_s_aData := func(ptr interface{}) { o.Data = *ptr.(*[]*BIDIRequestData) }
+	if err := w.ReadPointer(&o.Data, _s_aData, _ptr_aData); err != nil {
 		return err
-	}
-	// XXX: for opaque unmarshaling
-	if o.Count > 0 && sizeInfo[0] == 0 {
-		sizeInfo[0] = uint64(o.Count)
-	}
-	if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
-		return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
-	}
-	o.Data = make([]*BIDIRequestData, sizeInfo[0])
-	for i1 := range o.Data {
-		i1 := i1
-		if o.Data[i1] == nil {
-			o.Data[i1] = &BIDIRequestData{}
-		}
-		if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -12772,36 +12824,20 @@ type BIDIResponseContainer struct {
 }
 
 func (o *BIDIResponseContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Data != nil && o.Count == 0 {
 		o.Count = uint32(len(o.Data))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
-}
-
-func (o *BIDIResponseContainer) NDRSizeInfo() []uint64 {
-	dimSize1 := uint64(o.Count)
-	return []uint64{
-		dimSize1,
-	}
 }
 func (o *BIDIResponseContainer) MarshalNDR(ctx context.Context, w ndr.Writer) error {
 	if err := o.xxx_PreparePayload(ctx); err != nil {
 		return err
-	}
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for sz1 := range sizeInfo {
-			if err := w.WriteSize(sizeInfo[sz1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
 	}
 	if err := w.WriteAlign(9); err != nil {
 		return err
@@ -12815,42 +12851,48 @@ func (o *BIDIResponseContainer) MarshalNDR(ctx context.Context, w ndr.Writer) er
 	if err := w.WriteData(o.Count); err != nil {
 		return err
 	}
-	if err := w.WriteTrailingGap(9); err != nil {
-		return err
-	}
-	for i1 := range o.Data {
-		i1 := i1
-		if uint64(i1) >= sizeInfo[0] {
-			break
-		}
-		if o.Data[i1] != nil {
-			if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+	if o.Data != nil || o.Count > 0 {
+		_ptr_aData := ndr.MarshalNDRFunc(func(ctx context.Context, w ndr.Writer) error {
+			dimSize1 := uint64(o.Count)
+			if err := w.WriteSize(dimSize1); err != nil {
 				return err
 			}
-		} else {
-			if err := (&BIDIResponseData{}).MarshalNDR(ctx, w); err != nil {
-				return err
+			sizeInfo := []uint64{
+				dimSize1,
 			}
+			for i1 := range o.Data {
+				i1 := i1
+				if uint64(i1) >= sizeInfo[0] {
+					break
+				}
+				if o.Data[i1] != nil {
+					if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				} else {
+					if err := (&BIDIResponseData{}).MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				}
+			}
+			for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
+				if err := (&BIDIResponseData{}).MarshalNDR(ctx, w); err != nil {
+					return err
+				}
+			}
+			return nil
+		})
+		if err := w.WritePointer(&o.Data, _ptr_aData); err != nil {
+			return err
 		}
-	}
-	for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
-		if err := (&BIDIResponseData{}).MarshalNDR(ctx, w); err != nil {
+	} else {
+		if err := w.WritePointer(nil); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 func (o *BIDIResponseContainer) UnmarshalNDR(ctx context.Context, w ndr.Reader) error {
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for i1 := range sizeInfo {
-			if err := w.ReadSize(&sizeInfo[i1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
-	}
 	if err := w.ReadAlign(9); err != nil {
 		return err
 	}
@@ -12863,25 +12905,37 @@ func (o *BIDIResponseContainer) UnmarshalNDR(ctx context.Context, w ndr.Reader) 
 	if err := w.ReadData(&o.Count); err != nil {
 		return err
 	}
-	if err := w.ReadTrailingGap(9); err != nil {
+	_ptr_aData := ndr.UnmarshalNDRFunc(func(ctx context.Context, w ndr.Reader) error {
+		sizeInfo := []uint64{
+			0,
+		}
+		for sz1 := range sizeInfo {
+			if err := w.ReadSize(&sizeInfo[sz1]); err != nil {
+				return err
+			}
+		}
+		// XXX: for opaque unmarshaling
+		if o.Count > 0 && sizeInfo[0] == 0 {
+			sizeInfo[0] = uint64(o.Count)
+		}
+		if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
+			return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
+		}
+		o.Data = make([]*BIDIResponseData, sizeInfo[0])
+		for i1 := range o.Data {
+			i1 := i1
+			if o.Data[i1] == nil {
+				o.Data[i1] = &BIDIResponseData{}
+			}
+			if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	_s_aData := func(ptr interface{}) { o.Data = *ptr.(*[]*BIDIResponseData) }
+	if err := w.ReadPointer(&o.Data, _s_aData, _ptr_aData); err != nil {
 		return err
-	}
-	// XXX: for opaque unmarshaling
-	if o.Count > 0 && sizeInfo[0] == 0 {
-		sizeInfo[0] = uint64(o.Count)
-	}
-	if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
-		return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
-	}
-	o.Data = make([]*BIDIResponseData, sizeInfo[0])
-	for i1 := range o.Data {
-		i1 := i1
-		if o.Data[i1] == nil {
-			o.Data[i1] = &BIDIResponseData{}
-		}
-		if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -12898,13 +12952,14 @@ type SecurityContainer struct {
 }
 
 func (o *SecurityContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Security != nil && o.BufferLength == 0 {
 		o.BufferLength = uint32(len(o.Security))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -13006,10 +13061,11 @@ type ClientContainer struct {
 }
 
 func (o *ClientContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -13359,13 +13415,14 @@ type StringContainer struct {
 }
 
 func (o *StringContainer) xxx_PreparePayload(ctx context.Context) error {
-	if o.String != "" && o.BufferLength == 0 {
-		o.BufferLength = uint32((len(o.String) * 2))
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if o.String != "" && o.BufferLength == 0 {
+		o.BufferLength = uint32((ndr.UTF16Len(o.String) * 2))
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -13472,10 +13529,11 @@ type SystemTimeContainer struct {
 }
 
 func (o *SystemTimeContainer) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -13579,13 +13637,14 @@ type V2NotifyOptionsType struct {
 }
 
 func (o *V2NotifyOptionsType) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Fields != nil && o.Count == 0 {
 		o.Count = uint32(len(o.Fields))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -13735,13 +13794,14 @@ type V2NotifyOptions struct {
 }
 
 func (o *V2NotifyOptions) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Types != nil && o.Count == 0 {
 		o.Count = uint32(len(o.Types))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -14229,10 +14289,11 @@ type V2NotifyInfoData struct {
 }
 
 func (o *V2NotifyInfoData) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -14322,36 +14383,20 @@ type V2NotifyInfo struct {
 }
 
 func (o *V2NotifyInfo) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Data != nil && o.Count == 0 {
 		o.Count = uint32(len(o.Data))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
-}
-
-func (o *V2NotifyInfo) NDRSizeInfo() []uint64 {
-	dimSize1 := uint64(o.Count)
-	return []uint64{
-		dimSize1,
-	}
 }
 func (o *V2NotifyInfo) MarshalNDR(ctx context.Context, w ndr.Writer) error {
 	if err := o.xxx_PreparePayload(ctx); err != nil {
 		return err
-	}
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for sz1 := range sizeInfo {
-			if err := w.WriteSize(sizeInfo[sz1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
 	}
 	if err := w.WriteAlign(9); err != nil {
 		return err
@@ -14365,42 +14410,48 @@ func (o *V2NotifyInfo) MarshalNDR(ctx context.Context, w ndr.Writer) error {
 	if err := w.WriteData(o.Count); err != nil {
 		return err
 	}
-	if err := w.WriteTrailingGap(9); err != nil {
-		return err
-	}
-	for i1 := range o.Data {
-		i1 := i1
-		if uint64(i1) >= sizeInfo[0] {
-			break
-		}
-		if o.Data[i1] != nil {
-			if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+	if o.Data != nil || o.Count > 0 {
+		_ptr_aData := ndr.MarshalNDRFunc(func(ctx context.Context, w ndr.Writer) error {
+			dimSize1 := uint64(o.Count)
+			if err := w.WriteSize(dimSize1); err != nil {
 				return err
 			}
-		} else {
-			if err := (&V2NotifyInfoData{}).MarshalNDR(ctx, w); err != nil {
-				return err
+			sizeInfo := []uint64{
+				dimSize1,
 			}
+			for i1 := range o.Data {
+				i1 := i1
+				if uint64(i1) >= sizeInfo[0] {
+					break
+				}
+				if o.Data[i1] != nil {
+					if err := o.Data[i1].MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				} else {
+					if err := (&V2NotifyInfoData{}).MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				}
+			}
+			for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
+				if err := (&V2NotifyInfoData{}).MarshalNDR(ctx, w); err != nil {
+					return err
+				}
+			}
+			return nil
+		})
+		if err := w.WritePointer(&o.Data, _ptr_aData); err != nil {
+			return err
 		}
-	}
-	for i1 := len(o.Data); uint64(i1) < sizeInfo[0]; i1++ {
-		if err := (&V2NotifyInfoData{}).MarshalNDR(ctx, w); err != nil {
+	} else {
+		if err := w.WritePointer(nil); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 func (o *V2NotifyInfo) UnmarshalNDR(ctx context.Context, w ndr.Reader) error {
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for i1 := range sizeInfo {
-			if err := w.ReadSize(&sizeInfo[i1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
-	}
 	if err := w.ReadAlign(9); err != nil {
 		return err
 	}
@@ -14413,25 +14464,37 @@ func (o *V2NotifyInfo) UnmarshalNDR(ctx context.Context, w ndr.Reader) error {
 	if err := w.ReadData(&o.Count); err != nil {
 		return err
 	}
-	if err := w.ReadTrailingGap(9); err != nil {
+	_ptr_aData := ndr.UnmarshalNDRFunc(func(ctx context.Context, w ndr.Reader) error {
+		sizeInfo := []uint64{
+			0,
+		}
+		for sz1 := range sizeInfo {
+			if err := w.ReadSize(&sizeInfo[sz1]); err != nil {
+				return err
+			}
+		}
+		// XXX: for opaque unmarshaling
+		if o.Count > 0 && sizeInfo[0] == 0 {
+			sizeInfo[0] = uint64(o.Count)
+		}
+		if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
+			return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
+		}
+		o.Data = make([]*V2NotifyInfoData, sizeInfo[0])
+		for i1 := range o.Data {
+			i1 := i1
+			if o.Data[i1] == nil {
+				o.Data[i1] = &V2NotifyInfoData{}
+			}
+			if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	_s_aData := func(ptr interface{}) { o.Data = *ptr.(*[]*V2NotifyInfoData) }
+	if err := w.ReadPointer(&o.Data, _s_aData, _ptr_aData); err != nil {
 		return err
-	}
-	// XXX: for opaque unmarshaling
-	if o.Count > 0 && sizeInfo[0] == 0 {
-		sizeInfo[0] = uint64(o.Count)
-	}
-	if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
-		return fmt.Errorf("buffer overflow for size %d of array o.Data", sizeInfo[0])
-	}
-	o.Data = make([]*V2NotifyInfoData, sizeInfo[0])
-	for i1 := range o.Data {
-		i1 := i1
-		if o.Data[i1] == nil {
-			o.Data[i1] = &V2NotifyInfoData{}
-		}
-		if err := o.Data[i1].UnmarshalNDR(ctx, w); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -14630,10 +14693,11 @@ type CorePrinterDriver struct {
 }
 
 func (o *CorePrinterDriver) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -14728,10 +14792,11 @@ type PrintPropertyValue struct {
 }
 
 func (o *PrintPropertyValue) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15121,13 +15186,14 @@ type PrintPropertyValue_Value_PropertyBlob struct {
 }
 
 func (o *PrintPropertyValue_Value_PropertyBlob) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Buffer != nil && o.BufferLength == 0 {
 		o.BufferLength = uint32(len(o.Buffer))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15227,10 +15293,11 @@ type PrintNamedProperty struct {
 }
 
 func (o *PrintNamedProperty) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15366,10 +15433,11 @@ type BranchOfficeJobDataPrinted struct {
 }
 
 func (o *BranchOfficeJobDataPrinted) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15569,10 +15637,11 @@ type BranchOfficeJobDataRendered struct {
 }
 
 func (o *BranchOfficeJobDataRendered) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15688,10 +15757,11 @@ type BranchOfficeJobDataError struct {
 }
 
 func (o *BranchOfficeJobDataError) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -15940,10 +16010,11 @@ type BranchOfficeJobDataPipelineFailed struct {
 }
 
 func (o *BranchOfficeJobDataPipelineFailed) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -16053,10 +16124,11 @@ type BranchOfficeLogOfflineFileFull struct {
 }
 
 func (o *BranchOfficeLogOfflineFileFull) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -16120,10 +16192,11 @@ type BranchOfficeJobData struct {
 }
 
 func (o *BranchOfficeJobData) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -16542,104 +16615,106 @@ type BranchOfficeJobDataContainer struct {
 }
 
 func (o *BranchOfficeJobDataContainer) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.JobData != nil && o.JobDataEntriesCount == 0 {
 		o.JobDataEntriesCount = uint32(len(o.JobData))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
-}
-
-func (o *BranchOfficeJobDataContainer) NDRSizeInfo() []uint64 {
-	dimSize1 := uint64(o.JobDataEntriesCount)
-	return []uint64{
-		dimSize1,
-	}
 }
 func (o *BranchOfficeJobDataContainer) MarshalNDR(ctx context.Context, w ndr.Writer) error {
 	if err := o.xxx_PreparePayload(ctx); err != nil {
 		return err
 	}
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for sz1 := range sizeInfo {
-			if err := w.WriteSize(sizeInfo[sz1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
-	}
-	if err := w.WriteAlign(8); err != nil {
+	if err := w.WriteAlign(9); err != nil {
 		return err
 	}
 	if err := w.WriteData(o.JobDataEntriesCount); err != nil {
 		return err
 	}
-	if err := w.WriteTrailingGap(8); err != nil {
-		return err
-	}
-	for i1 := range o.JobData {
-		i1 := i1
-		if uint64(i1) >= sizeInfo[0] {
-			break
-		}
-		if o.JobData[i1] != nil {
-			if err := o.JobData[i1].MarshalNDR(ctx, w); err != nil {
+	if o.JobData != nil || o.JobDataEntriesCount > 0 {
+		_ptr_JobData := ndr.MarshalNDRFunc(func(ctx context.Context, w ndr.Writer) error {
+			dimSize1 := uint64(o.JobDataEntriesCount)
+			if err := w.WriteSize(dimSize1); err != nil {
 				return err
 			}
-		} else {
-			if err := (&BranchOfficeJobData{}).MarshalNDR(ctx, w); err != nil {
-				return err
+			sizeInfo := []uint64{
+				dimSize1,
 			}
+			for i1 := range o.JobData {
+				i1 := i1
+				if uint64(i1) >= sizeInfo[0] {
+					break
+				}
+				if o.JobData[i1] != nil {
+					if err := o.JobData[i1].MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				} else {
+					if err := (&BranchOfficeJobData{}).MarshalNDR(ctx, w); err != nil {
+						return err
+					}
+				}
+			}
+			for i1 := len(o.JobData); uint64(i1) < sizeInfo[0]; i1++ {
+				if err := (&BranchOfficeJobData{}).MarshalNDR(ctx, w); err != nil {
+					return err
+				}
+			}
+			return nil
+		})
+		if err := w.WritePointer(&o.JobData, _ptr_JobData); err != nil {
+			return err
 		}
-	}
-	for i1 := len(o.JobData); uint64(i1) < sizeInfo[0]; i1++ {
-		if err := (&BranchOfficeJobData{}).MarshalNDR(ctx, w); err != nil {
+	} else {
+		if err := w.WritePointer(nil); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 func (o *BranchOfficeJobDataContainer) UnmarshalNDR(ctx context.Context, w ndr.Reader) error {
-	sizeInfo, ok := ctx.Value(ndr.SizeInfo).([]uint64)
-	if !ok {
-		sizeInfo = o.NDRSizeInfo()
-		for i1 := range sizeInfo {
-			if err := w.ReadSize(&sizeInfo[i1]); err != nil {
-				return err
-			}
-		}
-		ctx = context.WithValue(ctx, ndr.SizeInfo, sizeInfo)
-	}
-	if err := w.ReadAlign(8); err != nil {
+	if err := w.ReadAlign(9); err != nil {
 		return err
 	}
 	if err := w.ReadData(&o.JobDataEntriesCount); err != nil {
 		return err
 	}
-	if err := w.ReadTrailingGap(8); err != nil {
+	_ptr_JobData := ndr.UnmarshalNDRFunc(func(ctx context.Context, w ndr.Reader) error {
+		sizeInfo := []uint64{
+			0,
+		}
+		for sz1 := range sizeInfo {
+			if err := w.ReadSize(&sizeInfo[sz1]); err != nil {
+				return err
+			}
+		}
+		// XXX: for opaque unmarshaling
+		if o.JobDataEntriesCount > 0 && sizeInfo[0] == 0 {
+			sizeInfo[0] = uint64(o.JobDataEntriesCount)
+		}
+		if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
+			return fmt.Errorf("buffer overflow for size %d of array o.JobData", sizeInfo[0])
+		}
+		o.JobData = make([]*BranchOfficeJobData, sizeInfo[0])
+		for i1 := range o.JobData {
+			i1 := i1
+			if o.JobData[i1] == nil {
+				o.JobData[i1] = &BranchOfficeJobData{}
+			}
+			if err := o.JobData[i1].UnmarshalNDR(ctx, w); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	_s_JobData := func(ptr interface{}) { o.JobData = *ptr.(*[]*BranchOfficeJobData) }
+	if err := w.ReadPointer(&o.JobData, _s_JobData, _ptr_JobData); err != nil {
 		return err
-	}
-	// XXX: for opaque unmarshaling
-	if o.JobDataEntriesCount > 0 && sizeInfo[0] == 0 {
-		sizeInfo[0] = uint64(o.JobDataEntriesCount)
-	}
-	if sizeInfo[0] > uint64(w.Len()) /* sanity-check */ {
-		return fmt.Errorf("buffer overflow for size %d of array o.JobData", sizeInfo[0])
-	}
-	o.JobData = make([]*BranchOfficeJobData, sizeInfo[0])
-	for i1 := range o.JobData {
-		i1 := i1
-		if o.JobData[i1] == nil {
-			o.JobData[i1] = &BranchOfficeJobData{}
-		}
-		if err := o.JobData[i1].UnmarshalNDR(ctx, w); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -39129,7 +39204,7 @@ func (o *xxx_GetCorePrinterDriversOperation) OpName() string {
 
 func (o *xxx_GetCorePrinterDriversOperation) xxx_PrepareRequestPayload(ctx context.Context) error {
 	if o.CoreDriverDependencies != "" && o.CoreDriversLength == 0 {
-		o.CoreDriversLength = uint32(len(o.CoreDriverDependencies))
+		o.CoreDriversLength = uint32(ndr.UTF16Len(o.CoreDriverDependencies))
 	}
 	if hook, ok := (interface{})(o).(interface{ AfterPrepareRequestPayload(context.Context) error }); ok {
 		if err := hook.AfterPrepareRequestPayload(ctx); err != nil {
@@ -39505,7 +39580,7 @@ func (o *xxx_GetPrinterDriverPackagePathOperation) OpName() string {
 
 func (o *xxx_GetPrinterDriverPackagePathOperation) xxx_PrepareRequestPayload(ctx context.Context) error {
 	if o.DriverPackageCab != "" && o.DriverPackageCabLength == 0 {
-		o.DriverPackageCabLength = uint32(len(o.DriverPackageCab))
+		o.DriverPackageCabLength = uint32(ndr.UTF16Len(o.DriverPackageCab))
 	}
 	if hook, ok := (interface{})(o).(interface{ AfterPrepareRequestPayload(context.Context) error }); ok {
 		if err := hook.AfterPrepareRequestPayload(ctx); err != nil {

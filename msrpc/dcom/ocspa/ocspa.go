@@ -1,3 +1,39 @@
+// The ocspa package implements the OCSPA client protocol.
+//
+// # Introduction
+//
+// This document specifies the Microsoft OCSP Administration Protocol. The protocol
+// consists of a set of Distributed Component Object Model (DCOM) interfaces that allow
+// administrative tools to configure the properties of the Online Responder.
+//
+// # Overview
+//
+// The Microsoft OCSP Administration Protocol consists of a set of DCOM interfaces [MS-DCOM]
+// that allows administrative tools to configure the properties of a responder.
+//
+// A responder is a server implementation of the Online Certificate Status Protocol
+// (OCSP). A responder can be configured to provide revocation information for certificates
+// issued by one or more certificate authorities (CAs) by creating a revocation configuration
+// for each CA key. A responder also has properties that apply generically across all
+// revocation configurations. These properties are sometimes referenced as "responder-wide"
+// properties or simply responder properties.
+//
+// Using this protocol, administrative tools can perform such functions as getting or
+// setting responder properties, creating and removing revocation configurations, and
+// retrieving signing certificates from a responder.
+//
+// The participants in this protocol are as follows:
+//
+// * Online Responder ( 801063f5-7eda-4bfe-99ef-84c1ea3849a1#gt_688a239d-e58b-42df-b622-da727dca4227
+// ) computer.
+//
+// * Administrator computer: A client computer that performs remote configuration or
+// administration tasks on the Online Responder computer.
+//
+// The protocol uses the IOCSPAdminD DCOM interface, which offers the 10 methods documented
+// in the following sections. These methods allow the administrator to set and retrieve
+// properties, set and retrieve security information, and to test whether the service
+// is responding.
 package ocspa
 
 import (
@@ -37,13 +73,14 @@ type CertTransportBlob struct {
 }
 
 func (o *CertTransportBlob) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Buffer != nil && o.Length == 0 {
 		o.Length = uint32(len(o.Buffer))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -178,16 +215,18 @@ type OCSPAdminD dcom.InterfacePointer
 func (o *OCSPAdminD) InterfacePointer() *dcom.InterfacePointer { return (*dcom.InterfacePointer)(o) }
 
 func (o *OCSPAdminD) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Data != nil && o.DataCount == 0 {
 		o.DataCount = uint32(len(o.Data))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
+
 func (o *OCSPAdminD) NDRSizeInfo() []uint64 {
 	dimSize1 := uint64(o.DataCount)
 	return []uint64{

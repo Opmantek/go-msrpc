@@ -822,6 +822,21 @@ const DACLSecurityInformation = 0x00000004
 // SACLSecurityInformation represents the SACL_SECURITY_INFORMATION RPC constant
 const SACLSecurityInformation = 0x00000008
 
+// KeyLocalMachine represents the HKEY_LOCAL_MACHINE RPC constant
+var KeyLocalMachine = "HKEY_LOCAL_MACHINE"
+
+// KeyClassesRoot represents the HKEY_CLASSES_ROOT RPC constant
+var KeyClassesRoot = "HKEY_CLASSES_ROOT"
+
+// KeyCurrentUser represents the HKEY_CURRENT_USER RPC constant
+var KeyCurrentUser = "HKEY_CURRENT_USER"
+
+// KeyUsers represents the HKEY_USERS RPC constant
+var KeyUsers = "HKEY_USERS"
+
+// KeyCurrentConfig represents the HKEY_CURRENT_CONFIG RPC constant
+var KeyCurrentConfig = "HKEY_CURRENT_CONFIG"
+
 // RegBinary represents the REG_BINARY RPC constant
 const RegBinary = 0x00000003
 
@@ -882,16 +897,17 @@ type UnicodeString dtyp.UnicodeString
 func (o *UnicodeString) UnicodeString() *dtyp.UnicodeString { return (*dtyp.UnicodeString)(o) }
 
 func (o *UnicodeString) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.Buffer != "" && o.MaximumLength == 0 {
-		o.MaximumLength = uint16((len(o.Buffer) * 2))
+		o.MaximumLength = uint16((ndr.UTF16Len(o.Buffer) * 2))
 	}
 	if o.Buffer != "" && o.Length == 0 {
-		o.Length = uint16((len(o.Buffer) * 2))
+		o.Length = uint16((ndr.UTF16Len(o.Buffer) * 2))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1013,10 +1029,11 @@ type Key dcetypes.ContextHandle
 func (o *Key) ContextHandle() *dcetypes.ContextHandle { return (*dcetypes.ContextHandle)(o) }
 
 func (o *Key) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1112,10 +1129,11 @@ type ValueEntry struct {
 }
 
 func (o *ValueEntry) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1222,16 +1240,17 @@ type SecurityDescriptor struct {
 }
 
 func (o *SecurityDescriptor) xxx_PreparePayload(ctx context.Context) error {
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
 	if o.SecurityDescriptor != nil && o.InSecurityDescriptorLength == 0 {
 		o.InSecurityDescriptorLength = uint32(len(o.SecurityDescriptor))
 	}
 	if o.SecurityDescriptor != nil && o.OutSecurityDescriptorLength == 0 {
 		o.OutSecurityDescriptorLength = uint32(len(o.SecurityDescriptor))
 	}
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1362,10 +1381,11 @@ type SecurityAttributes struct {
 }
 
 func (o *SecurityAttributes) xxx_PreparePayload(ctx context.Context) error {
-	if hook, ok := (interface{})(o).(interface{ AfterPreparePayload(context.Context) error }); ok {
-		if err := hook.AfterPreparePayload(ctx); err != nil {
-			return err
-		}
+	if err := ndr.BeforePreparePayload(ctx, o); err != nil {
+		return err
+	}
+	if err := ndr.AfterPreparePayload(ctx, o); err != nil {
+		return err
 	}
 	return nil
 }

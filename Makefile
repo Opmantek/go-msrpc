@@ -58,6 +58,7 @@ all:
 		capr.go \
 		cmpo.go \
 		cmrp.go \
+		conv.go \
 		dcetypes.go \
 		dcom.go \
 		dcom/adtg.go \
@@ -75,12 +76,23 @@ all:
 		dcom/iiss.go \
 		dcom/imsa.go \
 		dcom/ioi.go \
+		dcom/mqac.go \
+		dcom/oaut.go \
+		dcom/ocspa.go \
+		dcom/pla.go \
 		dcom/rai.go \
 		dcom/rdpesc.go \
-		dcom/oaut.go \
+		dcom/rrasm.go \
+		dcom/rsmp.go \
+		dcom/scmp.go \
+		dcom/tpmvsc.go \
+		dcom/tsrap.go \
+		dcom/uamg.go \
+		dcom/urlmon.go \
 		dcom/vds.go \
-		dcom/wmi.go \
 		dcom/wcce.go \
+		dcom/wmi.go \
+		dcom/wsrm.go \
 		dfsnm.go \
 		dhcpm.go \
 		dltm.go \
@@ -96,6 +108,8 @@ all:
 		even6.go \
 		fasp.go \
 		fax.go \
+		frs1.go \
+		frs2.go \
 		fsrvp.go \
 		gkdi.go \
 		icpr.go \
@@ -103,6 +117,7 @@ all:
 		lrec.go \
 		lsad.go \
 		lsat.go \
+		mgmt.go \
 		mqds.go \
 		mqmp.go \
 		mqmq.go \
@@ -135,6 +150,7 @@ all:
 		tsch.go \
 		tsgu.go \
 		w32t.go \
+		wdsc.go \
 		wkst.go
 
 .PHONY: test

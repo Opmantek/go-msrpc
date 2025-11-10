@@ -98,6 +98,9 @@ type OCSPAdminDClient interface {
 	// AlterContext alters the client context.
 	AlterContext(context.Context, ...dcerpc.Option) error
 
+	// Conn returns the client connection (unsafe)
+	Conn() dcerpc.Conn
+
 	// IPID sets the object interface identifier.
 	IPID(context.Context, *dcom.IPID) OCSPAdminDClient
 }
@@ -113,7 +116,7 @@ func (o *xxx_DefaultOCSPAdminDClient) Unknown() iunknown.UnknownClient {
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetOCSPProperty(ctx context.Context, in *GetOCSPPropertyRequest, opts ...dcerpc.CallOption) (*GetOCSPPropertyResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -133,7 +136,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetOCSPProperty(ctx context.Context, in *G
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) SetOCSPProperty(ctx context.Context, in *SetOCSPPropertyRequest, opts ...dcerpc.CallOption) (*SetOCSPPropertyResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -153,7 +156,7 @@ func (o *xxx_DefaultOCSPAdminDClient) SetOCSPProperty(ctx context.Context, in *S
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetCAConfigInformation(ctx context.Context, in *GetCAConfigInformationRequest, opts ...dcerpc.CallOption) (*GetCAConfigInformationResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -173,7 +176,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetCAConfigInformation(ctx context.Context
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) SetCAConfigInformation(ctx context.Context, in *SetCAConfigInformationRequest, opts ...dcerpc.CallOption) (*SetCAConfigInformationResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -193,7 +196,7 @@ func (o *xxx_DefaultOCSPAdminDClient) SetCAConfigInformation(ctx context.Context
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetSecurity(ctx context.Context, in *GetSecurityRequest, opts ...dcerpc.CallOption) (*GetSecurityResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -213,7 +216,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetSecurity(ctx context.Context, in *GetSe
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) SetSecurity(ctx context.Context, in *SetSecurityRequest, opts ...dcerpc.CallOption) (*SetSecurityResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -233,7 +236,7 @@ func (o *xxx_DefaultOCSPAdminDClient) SetSecurity(ctx context.Context, in *SetSe
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetSigningCertificates(ctx context.Context, in *GetSigningCertificatesRequest, opts ...dcerpc.CallOption) (*GetSigningCertificatesResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -253,7 +256,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetSigningCertificates(ctx context.Context
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetHashAlgorithms(ctx context.Context, in *GetHashAlgorithmsRequest, opts ...dcerpc.CallOption) (*GetHashAlgorithmsResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -273,7 +276,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetHashAlgorithms(ctx context.Context, in 
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) GetMyRoles(ctx context.Context, in *GetMyRolesRequest, opts ...dcerpc.CallOption) (*GetMyRolesResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -293,7 +296,7 @@ func (o *xxx_DefaultOCSPAdminDClient) GetMyRoles(ctx context.Context, in *GetMyR
 }
 
 func (o *xxx_DefaultOCSPAdminDClient) Ping(ctx context.Context, in *PingRequest, opts ...dcerpc.CallOption) (*PingResponse, error) {
-	op := in.xxx_ToOp(ctx)
+	op := in.xxx_ToOp(ctx, nil)
 	if _, ok := dcom.HasIPID(opts); !ok {
 		if o.ipid != nil {
 			opts = append(opts, dcom.WithIPID(o.ipid))
@@ -316,6 +319,10 @@ func (o *xxx_DefaultOCSPAdminDClient) AlterContext(ctx context.Context, opts ...
 	return o.cc.AlterContext(ctx, opts...)
 }
 
+func (o *xxx_DefaultOCSPAdminDClient) Conn() dcerpc.Conn {
+	return o.cc
+}
+
 func (o *xxx_DefaultOCSPAdminDClient) IPID(ctx context.Context, ipid *dcom.IPID) OCSPAdminDClient {
 	if ipid == nil {
 		ipid = &dcom.IPID{}
@@ -326,6 +333,7 @@ func (o *xxx_DefaultOCSPAdminDClient) IPID(ctx context.Context, ipid *dcom.IPID)
 		ipid:          ipid,
 	}
 }
+
 func NewOCSPAdminDClient(ctx context.Context, cc dcerpc.Conn, opts ...dcerpc.Option) (OCSPAdminDClient, error) {
 	var err error
 	if !dcom.IsSuperclass(opts) {
@@ -559,14 +567,16 @@ type GetOCSPPropertyRequest struct {
 	EntryName *oaut.String `idl:"name:bstrEntryName;pointer:ref" json:"entry_name"`
 }
 
-func (o *GetOCSPPropertyRequest) xxx_ToOp(ctx context.Context) *xxx_GetOCSPPropertyOperation {
+func (o *GetOCSPPropertyRequest) xxx_ToOp(ctx context.Context, op *xxx_GetOCSPPropertyOperation) *xxx_GetOCSPPropertyOperation {
+	if op == nil {
+		op = &xxx_GetOCSPPropertyOperation{}
+	}
 	if o == nil {
-		return &xxx_GetOCSPPropertyOperation{}
+		return op
 	}
-	return &xxx_GetOCSPPropertyOperation{
-		This:      o.This,
-		EntryName: o.EntryName,
-	}
+	op.This = o.This
+	op.EntryName = o.EntryName
+	return op
 }
 
 func (o *GetOCSPPropertyRequest) xxx_FromOp(ctx context.Context, op *xxx_GetOCSPPropertyOperation) {
@@ -577,7 +587,7 @@ func (o *GetOCSPPropertyRequest) xxx_FromOp(ctx context.Context, op *xxx_GetOCSP
 	o.EntryName = op.EntryName
 }
 func (o *GetOCSPPropertyRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetOCSPPropertyRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetOCSPPropertyOperation{}
@@ -625,7 +635,7 @@ type GetOCSPPropertyResponse struct {
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| NumOfThreads            | The vt member of the VARIANT referenced by pEntryValue MUST be set to VT_I4, and |
 	//	|                         | the lVal member MUST be set to the maximum number of simultaneous OCSP requests  |
-	//	|                         | [MS-OCSP] that can be served by the Online Responder Service. <5>                |
+	//	|                         | [MS-OCSP] that can be served by the Online Responder Service. <7>                |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| MaxNumOfCacheEntries    | The vt member of the VARIANT referenced by pEntryValue MUST be set to VT_I4, and |
 	//	|                         | the lVal member MUST be the maximum number of OCSP responses that can be cached  |
@@ -642,16 +652,16 @@ type GetOCSPPropertyResponse struct {
 	//	| LogLevel                | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies the level  |
 	//	|                         | of information to be communicated to the system (application eventlog channel)   |
-	//	|                         | as part of operations being performed on the service.<6>                         |
+	//	|                         | as part of operations being performed on the service.<8>                         |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| Debug                   | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be an integer value that specifies whether tracing    |
-	//	|                         | for errors on the responder is enabled or not.<7>                                |
+	//	|                         | for errors on the responder is enabled or not.<9>                                |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| EnrollPollInterval      | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies the        |
 	//	|                         | frequency (in number of hours) with which the responder will attempt to enroll   |
-	//	|                         | for a signing certificate (for signing OCSP responses).<8>                       |
+	//	|                         | for a signing certificate (for signing OCSP responses).<10>                      |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| RequestFlags            | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be either 0 or the following value. Flag value –      |
@@ -666,7 +676,7 @@ type GetOCSPPropertyResponse struct {
 	//	| NumOfBackendConnections | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies the        |
 	//	|                         | maximum number of connections that can be created by the web server to the       |
-	//	|                         | Online Responder Service. <9>                                                    |
+	//	|                         | Online Responder Service. <11>                                                   |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| RefreshRate             | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies the        |
@@ -681,12 +691,12 @@ type GetOCSPPropertyResponse struct {
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| ISAPIDebug              | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies whether    |
-	//	|                         | the tracing for errors on the web server is enabled or not.<10>                  |
+	//	|                         | the tracing for errors on the web server is enabled or not.<12>                  |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| MaxNumOfRequestEntries  | The vt member of the VARIANT referenced by pEntryValue SHOULD be set to VT_I4,   |
 	//	|                         | and the lVal member SHOULD be set to the integer value that specifies the        |
 	//	|                         | maximum number of requests that can be included in the requestList field of the  |
-	//	|                         | OCSPRequest structure ([RFC2560] section 4.1.1).<11>                             |
+	//	|                         | OCSPRequest structure ([RFC2560] section 4.1.1).<13>                             |
 	//	+-------------------------+----------------------------------------------------------------------------------+
 	//	| AllEntries              | The vt member of the VARIANT MUST be set to VT_ARRAY | VT_VARIANT, and the       |
 	//	|                         | pArray member MUST reference a two-dimensional safearray. The number of elements |
@@ -717,21 +727,23 @@ type GetOCSPPropertyResponse struct {
 	// MAY return the value as a VARIANT containing data of the type integer, string, date,
 	// or binary object. Otherwise, for bstrEntryName values that do not correspond to the
 	// previous list, the server responds as if the property were not yet configured on
-	// the responder. <12> ( ff1216b3-6fb4-4be8-b256-fb7055b1e86d#Appendix_A_12 )
+	// the responder. <14> ( ff1216b3-6fb4-4be8-b256-fb7055b1e86d#Appendix_A_14 )
 	EntryValue *oaut.Variant `idl:"name:pEntryValue;pointer:ref" json:"entry_value"`
 	// Return: The GetOCSPProperty return value.
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetOCSPPropertyResponse) xxx_ToOp(ctx context.Context) *xxx_GetOCSPPropertyOperation {
+func (o *GetOCSPPropertyResponse) xxx_ToOp(ctx context.Context, op *xxx_GetOCSPPropertyOperation) *xxx_GetOCSPPropertyOperation {
+	if op == nil {
+		op = &xxx_GetOCSPPropertyOperation{}
+	}
 	if o == nil {
-		return &xxx_GetOCSPPropertyOperation{}
+		return op
 	}
-	return &xxx_GetOCSPPropertyOperation{
-		That:       o.That,
-		EntryValue: o.EntryValue,
-		Return:     o.Return,
-	}
+	op.That = o.That
+	op.EntryValue = o.EntryValue
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetOCSPPropertyResponse) xxx_FromOp(ctx context.Context, op *xxx_GetOCSPPropertyOperation) {
@@ -743,7 +755,7 @@ func (o *GetOCSPPropertyResponse) xxx_FromOp(ctx context.Context, op *xxx_GetOCS
 	o.Return = op.Return
 }
 func (o *GetOCSPPropertyResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetOCSPPropertyResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetOCSPPropertyOperation{}
@@ -951,15 +963,17 @@ type SetOCSPPropertyRequest struct {
 	EntryValue *oaut.Variant `idl:"name:pEntryValue;pointer:ref" json:"entry_value"`
 }
 
-func (o *SetOCSPPropertyRequest) xxx_ToOp(ctx context.Context) *xxx_SetOCSPPropertyOperation {
+func (o *SetOCSPPropertyRequest) xxx_ToOp(ctx context.Context, op *xxx_SetOCSPPropertyOperation) *xxx_SetOCSPPropertyOperation {
+	if op == nil {
+		op = &xxx_SetOCSPPropertyOperation{}
+	}
 	if o == nil {
-		return &xxx_SetOCSPPropertyOperation{}
+		return op
 	}
-	return &xxx_SetOCSPPropertyOperation{
-		This:       o.This,
-		EntryName:  o.EntryName,
-		EntryValue: o.EntryValue,
-	}
+	op.This = o.This
+	op.EntryName = o.EntryName
+	op.EntryValue = o.EntryValue
+	return op
 }
 
 func (o *SetOCSPPropertyRequest) xxx_FromOp(ctx context.Context, op *xxx_SetOCSPPropertyOperation) {
@@ -971,7 +985,7 @@ func (o *SetOCSPPropertyRequest) xxx_FromOp(ctx context.Context, op *xxx_SetOCSP
 	o.EntryValue = op.EntryValue
 }
 func (o *SetOCSPPropertyRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *SetOCSPPropertyRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetOCSPPropertyOperation{}
@@ -990,14 +1004,16 @@ type SetOCSPPropertyResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *SetOCSPPropertyResponse) xxx_ToOp(ctx context.Context) *xxx_SetOCSPPropertyOperation {
+func (o *SetOCSPPropertyResponse) xxx_ToOp(ctx context.Context, op *xxx_SetOCSPPropertyOperation) *xxx_SetOCSPPropertyOperation {
+	if op == nil {
+		op = &xxx_SetOCSPPropertyOperation{}
+	}
 	if o == nil {
-		return &xxx_SetOCSPPropertyOperation{}
+		return op
 	}
-	return &xxx_SetOCSPPropertyOperation{
-		That:   o.That,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.Return = o.Return
+	return op
 }
 
 func (o *SetOCSPPropertyResponse) xxx_FromOp(ctx context.Context, op *xxx_SetOCSPPropertyOperation) {
@@ -1008,7 +1024,7 @@ func (o *SetOCSPPropertyResponse) xxx_FromOp(ctx context.Context, op *xxx_SetOCS
 	o.Return = op.Return
 }
 func (o *SetOCSPPropertyResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *SetOCSPPropertyResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetOCSPPropertyOperation{}
@@ -1216,14 +1232,16 @@ type GetCAConfigInformationRequest struct {
 	CAID *oaut.String `idl:"name:bstrCAId;pointer:ref" json:"ca_id"`
 }
 
-func (o *GetCAConfigInformationRequest) xxx_ToOp(ctx context.Context) *xxx_GetCAConfigInformationOperation {
+func (o *GetCAConfigInformationRequest) xxx_ToOp(ctx context.Context, op *xxx_GetCAConfigInformationOperation) *xxx_GetCAConfigInformationOperation {
+	if op == nil {
+		op = &xxx_GetCAConfigInformationOperation{}
+	}
 	if o == nil {
-		return &xxx_GetCAConfigInformationOperation{}
+		return op
 	}
-	return &xxx_GetCAConfigInformationOperation{
-		This: o.This,
-		CAID: o.CAID,
-	}
+	op.This = o.This
+	op.CAID = o.CAID
+	return op
 }
 
 func (o *GetCAConfigInformationRequest) xxx_FromOp(ctx context.Context, op *xxx_GetCAConfigInformationOperation) {
@@ -1234,7 +1252,7 @@ func (o *GetCAConfigInformationRequest) xxx_FromOp(ctx context.Context, op *xxx_
 	o.CAID = op.CAID
 }
 func (o *GetCAConfigInformationRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetCAConfigInformationRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetCAConfigInformationOperation{}
@@ -1256,15 +1274,17 @@ type GetCAConfigInformationResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetCAConfigInformationResponse) xxx_ToOp(ctx context.Context) *xxx_GetCAConfigInformationOperation {
+func (o *GetCAConfigInformationResponse) xxx_ToOp(ctx context.Context, op *xxx_GetCAConfigInformationOperation) *xxx_GetCAConfigInformationOperation {
+	if op == nil {
+		op = &xxx_GetCAConfigInformationOperation{}
+	}
 	if o == nil {
-		return &xxx_GetCAConfigInformationOperation{}
+		return op
 	}
-	return &xxx_GetCAConfigInformationOperation{
-		That:       o.That,
-		EntryValue: o.EntryValue,
-		Return:     o.Return,
-	}
+	op.That = o.That
+	op.EntryValue = o.EntryValue
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetCAConfigInformationResponse) xxx_FromOp(ctx context.Context, op *xxx_GetCAConfigInformationOperation) {
@@ -1276,7 +1296,7 @@ func (o *GetCAConfigInformationResponse) xxx_FromOp(ctx context.Context, op *xxx
 	o.Return = op.Return
 }
 func (o *GetCAConfigInformationResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetCAConfigInformationResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetCAConfigInformationOperation{}
@@ -1487,15 +1507,17 @@ type SetCAConfigInformationRequest struct {
 	EntryValue *oaut.Variant `idl:"name:pEntryValue;pointer:ref" json:"entry_value"`
 }
 
-func (o *SetCAConfigInformationRequest) xxx_ToOp(ctx context.Context) *xxx_SetCAConfigInformationOperation {
+func (o *SetCAConfigInformationRequest) xxx_ToOp(ctx context.Context, op *xxx_SetCAConfigInformationOperation) *xxx_SetCAConfigInformationOperation {
+	if op == nil {
+		op = &xxx_SetCAConfigInformationOperation{}
+	}
 	if o == nil {
-		return &xxx_SetCAConfigInformationOperation{}
+		return op
 	}
-	return &xxx_SetCAConfigInformationOperation{
-		This:       o.This,
-		CAID:       o.CAID,
-		EntryValue: o.EntryValue,
-	}
+	op.This = o.This
+	op.CAID = o.CAID
+	op.EntryValue = o.EntryValue
+	return op
 }
 
 func (o *SetCAConfigInformationRequest) xxx_FromOp(ctx context.Context, op *xxx_SetCAConfigInformationOperation) {
@@ -1507,7 +1529,7 @@ func (o *SetCAConfigInformationRequest) xxx_FromOp(ctx context.Context, op *xxx_
 	o.EntryValue = op.EntryValue
 }
 func (o *SetCAConfigInformationRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *SetCAConfigInformationRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetCAConfigInformationOperation{}
@@ -1526,14 +1548,16 @@ type SetCAConfigInformationResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *SetCAConfigInformationResponse) xxx_ToOp(ctx context.Context) *xxx_SetCAConfigInformationOperation {
+func (o *SetCAConfigInformationResponse) xxx_ToOp(ctx context.Context, op *xxx_SetCAConfigInformationOperation) *xxx_SetCAConfigInformationOperation {
+	if op == nil {
+		op = &xxx_SetCAConfigInformationOperation{}
+	}
 	if o == nil {
-		return &xxx_SetCAConfigInformationOperation{}
+		return op
 	}
-	return &xxx_SetCAConfigInformationOperation{
-		That:   o.That,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.Return = o.Return
+	return op
 }
 
 func (o *SetCAConfigInformationResponse) xxx_FromOp(ctx context.Context, op *xxx_SetCAConfigInformationOperation) {
@@ -1544,7 +1568,7 @@ func (o *SetCAConfigInformationResponse) xxx_FromOp(ctx context.Context, op *xxx
 	o.Return = op.Return
 }
 func (o *SetCAConfigInformationResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *SetCAConfigInformationResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetCAConfigInformationOperation{}
@@ -1557,10 +1581,10 @@ func (o *SetCAConfigInformationResponse) UnmarshalNDR(ctx context.Context, r ndr
 
 // xxx_GetSecurityOperation structure represents the GetSecurity operation
 type xxx_GetSecurityOperation struct {
-	This   *dcom.ORPCThis           `idl:"name:This" json:"this"`
-	That   *dcom.ORPCThat           `idl:"name:That" json:"that"`
-	SD     *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"sd"`
-	Return int32                    `idl:"name:Return" json:"return"`
+	This               *dcom.ORPCThis           `idl:"name:This" json:"this"`
+	That               *dcom.ORPCThat           `idl:"name:That" json:"that"`
+	SecurityDescriptor *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"security_descriptor"`
+	Return             int32                    `idl:"name:Return" json:"return"`
 }
 
 func (o *xxx_GetSecurityOperation) OpNum() int { return 7 }
@@ -1644,8 +1668,8 @@ func (o *xxx_GetSecurityOperation) MarshalNDRResponse(ctx context.Context, w ndr
 	}
 	// pctbSD {out} (1:{pointer=ref}*(1))(2:{alias=CERTTRANSBLOB}(struct))
 	{
-		if o.SD != nil {
-			if err := o.SD.MarshalNDR(ctx, w); err != nil {
+		if o.SecurityDescriptor != nil {
+			if err := o.SecurityDescriptor.MarshalNDR(ctx, w); err != nil {
 				return err
 			}
 		} else {
@@ -1681,10 +1705,10 @@ func (o *xxx_GetSecurityOperation) UnmarshalNDRResponse(ctx context.Context, w n
 	}
 	// pctbSD {out} (1:{pointer=ref}*(1))(2:{alias=CERTTRANSBLOB}(struct))
 	{
-		if o.SD == nil {
-			o.SD = &ocspa.CertTransportBlob{}
+		if o.SecurityDescriptor == nil {
+			o.SecurityDescriptor = &ocspa.CertTransportBlob{}
 		}
-		if err := o.SD.UnmarshalNDR(ctx, w); err != nil {
+		if err := o.SecurityDescriptor.UnmarshalNDR(ctx, w); err != nil {
 			return err
 		}
 		if err := w.ReadDeferred(); err != nil {
@@ -1706,13 +1730,15 @@ type GetSecurityRequest struct {
 	This *dcom.ORPCThis `idl:"name:This" json:"this"`
 }
 
-func (o *GetSecurityRequest) xxx_ToOp(ctx context.Context) *xxx_GetSecurityOperation {
+func (o *GetSecurityRequest) xxx_ToOp(ctx context.Context, op *xxx_GetSecurityOperation) *xxx_GetSecurityOperation {
+	if op == nil {
+		op = &xxx_GetSecurityOperation{}
+	}
 	if o == nil {
-		return &xxx_GetSecurityOperation{}
+		return op
 	}
-	return &xxx_GetSecurityOperation{
-		This: o.This,
-	}
+	op.This = o.This
+	return op
 }
 
 func (o *GetSecurityRequest) xxx_FromOp(ctx context.Context, op *xxx_GetSecurityOperation) {
@@ -1722,7 +1748,7 @@ func (o *GetSecurityRequest) xxx_FromOp(ctx context.Context, op *xxx_GetSecurity
 	o.This = op.This
 }
 func (o *GetSecurityRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetSecurityRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetSecurityOperation{}
@@ -1739,21 +1765,23 @@ type GetSecurityResponse struct {
 	That *dcom.ORPCThat `idl:"name:That" json:"that"`
 	// pctbSD: This is a pointer to a CERTTRANSBLOB structure that contains the marshaled
 	// Security Descriptor. Information on Security Descriptors is documented in [MS-DTYP]
-	// section 2.4.6.<17>
-	SD *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"sd"`
+	// section 2.4.6.<21>
+	SecurityDescriptor *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"security_descriptor"`
 	// Return: The GetSecurity return value.
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetSecurityResponse) xxx_ToOp(ctx context.Context) *xxx_GetSecurityOperation {
+func (o *GetSecurityResponse) xxx_ToOp(ctx context.Context, op *xxx_GetSecurityOperation) *xxx_GetSecurityOperation {
+	if op == nil {
+		op = &xxx_GetSecurityOperation{}
+	}
 	if o == nil {
-		return &xxx_GetSecurityOperation{}
+		return op
 	}
-	return &xxx_GetSecurityOperation{
-		That:   o.That,
-		SD:     o.SD,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.SecurityDescriptor = o.SecurityDescriptor
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetSecurityResponse) xxx_FromOp(ctx context.Context, op *xxx_GetSecurityOperation) {
@@ -1761,11 +1789,11 @@ func (o *GetSecurityResponse) xxx_FromOp(ctx context.Context, op *xxx_GetSecurit
 		return
 	}
 	o.That = op.That
-	o.SD = op.SD
+	o.SecurityDescriptor = op.SecurityDescriptor
 	o.Return = op.Return
 }
 func (o *GetSecurityResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetSecurityResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetSecurityOperation{}
@@ -1778,10 +1806,10 @@ func (o *GetSecurityResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) er
 
 // xxx_SetSecurityOperation structure represents the SetSecurity operation
 type xxx_SetSecurityOperation struct {
-	This   *dcom.ORPCThis           `idl:"name:This" json:"this"`
-	That   *dcom.ORPCThat           `idl:"name:That" json:"that"`
-	SD     *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"sd"`
-	Return int32                    `idl:"name:Return" json:"return"`
+	This               *dcom.ORPCThis           `idl:"name:This" json:"this"`
+	That               *dcom.ORPCThat           `idl:"name:That" json:"that"`
+	SecurityDescriptor *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"security_descriptor"`
+	Return             int32                    `idl:"name:Return" json:"return"`
 }
 
 func (o *xxx_SetSecurityOperation) OpNum() int { return 8 }
@@ -1818,8 +1846,8 @@ func (o *xxx_SetSecurityOperation) MarshalNDRRequest(ctx context.Context, w ndr.
 	}
 	// pctbSD {in} (1:{pointer=ref}*(1))(2:{alias=CERTTRANSBLOB}(struct))
 	{
-		if o.SD != nil {
-			if err := o.SD.MarshalNDR(ctx, w); err != nil {
+		if o.SecurityDescriptor != nil {
+			if err := o.SecurityDescriptor.MarshalNDR(ctx, w); err != nil {
 				return err
 			}
 		} else {
@@ -1849,10 +1877,10 @@ func (o *xxx_SetSecurityOperation) UnmarshalNDRRequest(ctx context.Context, w nd
 	}
 	// pctbSD {in} (1:{pointer=ref}*(1))(2:{alias=CERTTRANSBLOB}(struct))
 	{
-		if o.SD == nil {
-			o.SD = &ocspa.CertTransportBlob{}
+		if o.SecurityDescriptor == nil {
+			o.SecurityDescriptor = &ocspa.CertTransportBlob{}
 		}
-		if err := o.SD.UnmarshalNDR(ctx, w); err != nil {
+		if err := o.SecurityDescriptor.UnmarshalNDR(ctx, w); err != nil {
 			return err
 		}
 		if err := w.ReadDeferred(); err != nil {
@@ -1928,17 +1956,19 @@ type SetSecurityRequest struct {
 	// pctbSD: A pointer to the CERTTRANSBLOB structure that contains the marshaled security
 	// descriptor. Information on security descriptors is documented in [MS-DTYP] section
 	// 2.4.6.
-	SD *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"sd"`
+	SecurityDescriptor *ocspa.CertTransportBlob `idl:"name:pctbSD;pointer:ref" json:"security_descriptor"`
 }
 
-func (o *SetSecurityRequest) xxx_ToOp(ctx context.Context) *xxx_SetSecurityOperation {
+func (o *SetSecurityRequest) xxx_ToOp(ctx context.Context, op *xxx_SetSecurityOperation) *xxx_SetSecurityOperation {
+	if op == nil {
+		op = &xxx_SetSecurityOperation{}
+	}
 	if o == nil {
-		return &xxx_SetSecurityOperation{}
+		return op
 	}
-	return &xxx_SetSecurityOperation{
-		This: o.This,
-		SD:   o.SD,
-	}
+	op.This = o.This
+	op.SecurityDescriptor = o.SecurityDescriptor
+	return op
 }
 
 func (o *SetSecurityRequest) xxx_FromOp(ctx context.Context, op *xxx_SetSecurityOperation) {
@@ -1946,10 +1976,10 @@ func (o *SetSecurityRequest) xxx_FromOp(ctx context.Context, op *xxx_SetSecurity
 		return
 	}
 	o.This = op.This
-	o.SD = op.SD
+	o.SecurityDescriptor = op.SecurityDescriptor
 }
 func (o *SetSecurityRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *SetSecurityRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetSecurityOperation{}
@@ -1968,14 +1998,16 @@ type SetSecurityResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *SetSecurityResponse) xxx_ToOp(ctx context.Context) *xxx_SetSecurityOperation {
+func (o *SetSecurityResponse) xxx_ToOp(ctx context.Context, op *xxx_SetSecurityOperation) *xxx_SetSecurityOperation {
+	if op == nil {
+		op = &xxx_SetSecurityOperation{}
+	}
 	if o == nil {
-		return &xxx_SetSecurityOperation{}
+		return op
 	}
-	return &xxx_SetSecurityOperation{
-		That:   o.That,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.Return = o.Return
+	return op
 }
 
 func (o *SetSecurityResponse) xxx_FromOp(ctx context.Context, op *xxx_SetSecurityOperation) {
@@ -1986,7 +2018,7 @@ func (o *SetSecurityResponse) xxx_FromOp(ctx context.Context, op *xxx_SetSecurit
 	o.Return = op.Return
 }
 func (o *SetSecurityResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *SetSecurityResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_SetSecurityOperation{}
@@ -2218,14 +2250,16 @@ type GetSigningCertificatesRequest struct {
 	CAVar *oaut.Variant `idl:"name:pCAVar;pointer:ref" json:"ca_var"`
 }
 
-func (o *GetSigningCertificatesRequest) xxx_ToOp(ctx context.Context) *xxx_GetSigningCertificatesOperation {
+func (o *GetSigningCertificatesRequest) xxx_ToOp(ctx context.Context, op *xxx_GetSigningCertificatesOperation) *xxx_GetSigningCertificatesOperation {
+	if op == nil {
+		op = &xxx_GetSigningCertificatesOperation{}
+	}
 	if o == nil {
-		return &xxx_GetSigningCertificatesOperation{}
+		return op
 	}
-	return &xxx_GetSigningCertificatesOperation{
-		This:  o.This,
-		CAVar: o.CAVar,
-	}
+	op.This = o.This
+	op.CAVar = o.CAVar
+	return op
 }
 
 func (o *GetSigningCertificatesRequest) xxx_FromOp(ctx context.Context, op *xxx_GetSigningCertificatesOperation) {
@@ -2236,7 +2270,7 @@ func (o *GetSigningCertificatesRequest) xxx_FromOp(ctx context.Context, op *xxx_
 	o.CAVar = op.CAVar
 }
 func (o *GetSigningCertificatesRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetSigningCertificatesRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetSigningCertificatesOperation{}
@@ -2257,15 +2291,17 @@ type GetSigningCertificatesResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetSigningCertificatesResponse) xxx_ToOp(ctx context.Context) *xxx_GetSigningCertificatesOperation {
+func (o *GetSigningCertificatesResponse) xxx_ToOp(ctx context.Context, op *xxx_GetSigningCertificatesOperation) *xxx_GetSigningCertificatesOperation {
+	if op == nil {
+		op = &xxx_GetSigningCertificatesOperation{}
+	}
 	if o == nil {
-		return &xxx_GetSigningCertificatesOperation{}
+		return op
 	}
-	return &xxx_GetSigningCertificatesOperation{
-		That:                o.That,
-		SigningCertificates: o.SigningCertificates,
-		Return:              o.Return,
-	}
+	op.That = o.That
+	op.SigningCertificates = o.SigningCertificates
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetSigningCertificatesResponse) xxx_FromOp(ctx context.Context, op *xxx_GetSigningCertificatesOperation) {
@@ -2277,7 +2313,7 @@ func (o *GetSigningCertificatesResponse) xxx_FromOp(ctx context.Context, op *xxx
 	o.Return = op.Return
 }
 func (o *GetSigningCertificatesResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetSigningCertificatesResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetSigningCertificatesOperation{}
@@ -2482,14 +2518,16 @@ type GetHashAlgorithmsRequest struct {
 	CAID *oaut.String `idl:"name:bstrCAId;pointer:ref" json:"ca_id"`
 }
 
-func (o *GetHashAlgorithmsRequest) xxx_ToOp(ctx context.Context) *xxx_GetHashAlgorithmsOperation {
+func (o *GetHashAlgorithmsRequest) xxx_ToOp(ctx context.Context, op *xxx_GetHashAlgorithmsOperation) *xxx_GetHashAlgorithmsOperation {
+	if op == nil {
+		op = &xxx_GetHashAlgorithmsOperation{}
+	}
 	if o == nil {
-		return &xxx_GetHashAlgorithmsOperation{}
+		return op
 	}
-	return &xxx_GetHashAlgorithmsOperation{
-		This: o.This,
-		CAID: o.CAID,
-	}
+	op.This = o.This
+	op.CAID = o.CAID
+	return op
 }
 
 func (o *GetHashAlgorithmsRequest) xxx_FromOp(ctx context.Context, op *xxx_GetHashAlgorithmsOperation) {
@@ -2500,7 +2538,7 @@ func (o *GetHashAlgorithmsRequest) xxx_FromOp(ctx context.Context, op *xxx_GetHa
 	o.CAID = op.CAID
 }
 func (o *GetHashAlgorithmsRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetHashAlgorithmsRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetHashAlgorithmsOperation{}
@@ -2521,15 +2559,17 @@ type GetHashAlgorithmsResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetHashAlgorithmsResponse) xxx_ToOp(ctx context.Context) *xxx_GetHashAlgorithmsOperation {
+func (o *GetHashAlgorithmsResponse) xxx_ToOp(ctx context.Context, op *xxx_GetHashAlgorithmsOperation) *xxx_GetHashAlgorithmsOperation {
+	if op == nil {
+		op = &xxx_GetHashAlgorithmsOperation{}
+	}
 	if o == nil {
-		return &xxx_GetHashAlgorithmsOperation{}
+		return op
 	}
-	return &xxx_GetHashAlgorithmsOperation{
-		That:           o.That,
-		HashAlgorithms: o.HashAlgorithms,
-		Return:         o.Return,
-	}
+	op.That = o.That
+	op.HashAlgorithms = o.HashAlgorithms
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetHashAlgorithmsResponse) xxx_FromOp(ctx context.Context, op *xxx_GetHashAlgorithmsOperation) {
@@ -2541,7 +2581,7 @@ func (o *GetHashAlgorithmsResponse) xxx_FromOp(ctx context.Context, op *xxx_GetH
 	o.Return = op.Return
 }
 func (o *GetHashAlgorithmsResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetHashAlgorithmsResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetHashAlgorithmsOperation{}
@@ -2688,13 +2728,15 @@ type GetMyRolesRequest struct {
 	This *dcom.ORPCThis `idl:"name:This" json:"this"`
 }
 
-func (o *GetMyRolesRequest) xxx_ToOp(ctx context.Context) *xxx_GetMyRolesOperation {
+func (o *GetMyRolesRequest) xxx_ToOp(ctx context.Context, op *xxx_GetMyRolesOperation) *xxx_GetMyRolesOperation {
+	if op == nil {
+		op = &xxx_GetMyRolesOperation{}
+	}
 	if o == nil {
-		return &xxx_GetMyRolesOperation{}
+		return op
 	}
-	return &xxx_GetMyRolesOperation{
-		This: o.This,
-	}
+	op.This = o.This
+	return op
 }
 
 func (o *GetMyRolesRequest) xxx_FromOp(ctx context.Context, op *xxx_GetMyRolesOperation) {
@@ -2704,7 +2746,7 @@ func (o *GetMyRolesRequest) xxx_FromOp(ctx context.Context, op *xxx_GetMyRolesOp
 	o.This = op.This
 }
 func (o *GetMyRolesRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *GetMyRolesRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetMyRolesOperation{}
@@ -2742,15 +2784,17 @@ type GetMyRolesResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *GetMyRolesResponse) xxx_ToOp(ctx context.Context) *xxx_GetMyRolesOperation {
+func (o *GetMyRolesResponse) xxx_ToOp(ctx context.Context, op *xxx_GetMyRolesOperation) *xxx_GetMyRolesOperation {
+	if op == nil {
+		op = &xxx_GetMyRolesOperation{}
+	}
 	if o == nil {
-		return &xxx_GetMyRolesOperation{}
+		return op
 	}
-	return &xxx_GetMyRolesOperation{
-		That:   o.That,
-		Roles:  o.Roles,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.Roles = o.Roles
+	op.Return = o.Return
+	return op
 }
 
 func (o *GetMyRolesResponse) xxx_FromOp(ctx context.Context, op *xxx_GetMyRolesOperation) {
@@ -2762,7 +2806,7 @@ func (o *GetMyRolesResponse) xxx_FromOp(ctx context.Context, op *xxx_GetMyRolesO
 	o.Return = op.Return
 }
 func (o *GetMyRolesResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *GetMyRolesResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_GetMyRolesOperation{}
@@ -2896,13 +2940,15 @@ type PingRequest struct {
 	This *dcom.ORPCThis `idl:"name:This" json:"this"`
 }
 
-func (o *PingRequest) xxx_ToOp(ctx context.Context) *xxx_PingOperation {
+func (o *PingRequest) xxx_ToOp(ctx context.Context, op *xxx_PingOperation) *xxx_PingOperation {
+	if op == nil {
+		op = &xxx_PingOperation{}
+	}
 	if o == nil {
-		return &xxx_PingOperation{}
+		return op
 	}
-	return &xxx_PingOperation{
-		This: o.This,
-	}
+	op.This = o.This
+	return op
 }
 
 func (o *PingRequest) xxx_FromOp(ctx context.Context, op *xxx_PingOperation) {
@@ -2912,7 +2958,7 @@ func (o *PingRequest) xxx_FromOp(ctx context.Context, op *xxx_PingOperation) {
 	o.This = op.This
 }
 func (o *PingRequest) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRRequest(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRRequest(ctx, w)
 }
 func (o *PingRequest) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_PingOperation{}
@@ -2931,14 +2977,16 @@ type PingResponse struct {
 	Return int32 `idl:"name:Return" json:"return"`
 }
 
-func (o *PingResponse) xxx_ToOp(ctx context.Context) *xxx_PingOperation {
+func (o *PingResponse) xxx_ToOp(ctx context.Context, op *xxx_PingOperation) *xxx_PingOperation {
+	if op == nil {
+		op = &xxx_PingOperation{}
+	}
 	if o == nil {
-		return &xxx_PingOperation{}
+		return op
 	}
-	return &xxx_PingOperation{
-		That:   o.That,
-		Return: o.Return,
-	}
+	op.That = o.That
+	op.Return = o.Return
+	return op
 }
 
 func (o *PingResponse) xxx_FromOp(ctx context.Context, op *xxx_PingOperation) {
@@ -2949,7 +2997,7 @@ func (o *PingResponse) xxx_FromOp(ctx context.Context, op *xxx_PingOperation) {
 	o.Return = op.Return
 }
 func (o *PingResponse) MarshalNDR(ctx context.Context, w ndr.Writer) error {
-	return o.xxx_ToOp(ctx).MarshalNDRResponse(ctx, w)
+	return o.xxx_ToOp(ctx, nil).MarshalNDRResponse(ctx, w)
 }
 func (o *PingResponse) UnmarshalNDR(ctx context.Context, r ndr.Reader) error {
 	_o := &xxx_PingOperation{}
