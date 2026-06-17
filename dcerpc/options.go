@@ -3,6 +3,7 @@ package dcerpc
 import (
 	"context"
 
+	"github.com/oiweiwei/go-msrpc/dcerpc/errors"
 	"github.com/oiweiwei/go-msrpc/midl/uuid"
 	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
 	"github.com/rs/zerolog"
@@ -43,6 +44,8 @@ type option struct {
 	Logger zerolog.Logger
 	// The binding string.
 	Bindings []string
+	// The Error mapper.
+	ErrorMappers []errors.Mapper
 }
 
 // TargetBinding returns the string representation without any trailing slashes or
@@ -439,6 +442,47 @@ func WithEndpoint(s string) BindOption {
 	})
 }
 
+// WithErrorMapper specifies the error mappers for the connection.
+//
+// Use this option to provide custom error mappers for the connection:
+//
+//	import "github.com/oiweiwei/go-msrpc/msrpc/erref/win32"
+//
+//	cli, err := winreg.NewWinregClient(ctx, conn,
+//	  dcerpc.WithSeal(), dcerpc.WithErrorMapper(win32.Mapper{}))
+func WithErrorMapper(mapper ...errors.Mapper) BindOption {
+	return BindOption(func(o *option) {
+		o.ErrorMappers = append(o.ErrorMappers, mapper...)
+	})
+}
+
+// ExtractSecurityOptions function extracts the security context options from
+// the provided options set and returns a SecurityContextOption that applies
+// them to an option struct.
+func ExtractSecurityOptions(ctx context.Context, opts ...Option) SecurityContextOption {
+
+	var secOpts []SecurityOption
+
+	for i := range opts {
+		if o, ok := (opts[i]).(SecurityOption); ok {
+			secOpts = append(secOpts, o)
+		}
+	}
+
+	return SecurityContextOption(func(o *option) {
+		if len(secOpts) > 0 {
+			if o.Security == nil {
+				o.Security = &Security{}
+			}
+			for i := range secOpts {
+				secOpts[i](o.Security)
+			}
+		}
+	})
+}
+
+// ParseSecurityOptions function parses the security context options from the provided
+// options set and returns an option struct with the SecurityOptions field populated.
 func ParseSecurityOptions(ctx context.Context, opts ...Option) *option {
 
 	option := &option{}

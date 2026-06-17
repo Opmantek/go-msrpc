@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog"
 
+	"github.com/oiweiwei/go-msrpc/dcerpc/errors"
 	"github.com/oiweiwei/go-msrpc/midl/uuid"
 	"github.com/oiweiwei/go-msrpc/smb2"
 	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
@@ -24,11 +25,15 @@ type BufferedConn struct {
 	cur, total []byte
 }
 
-func (conn *BufferedConn) Resized(sz int) *BufferedConn {
-	if sz > len(conn.total) {
-		conn.total = make([]byte, sz)
+func resizeBuffer(buf []byte, sz int) []byte {
+	if sz > len(buf) {
+		return make([]byte, sz)
 	}
-	conn.cur, conn.total = nil, conn.total[:sz]
+	return buf[:sz]
+}
+
+func (conn *BufferedConn) Resized(sz int) *BufferedConn {
+	conn.cur, conn.total = nil, resizeBuffer(conn.total, sz)
 	return conn
 }
 
@@ -117,7 +122,7 @@ func Dial(ctx context.Context, addr string, opts ...Option) (Conn, error) {
 		opts:       append(opts, WithGroup(group)),
 	}
 
-	ip, hostName, binding, err := ParseServerAddrWithDNSLookup(addr, true)
+	ip, hostName, binding, err := parseServerAddrWithDNSLookup(ctx, addr, settings.DNSResolver)
 	if err != nil {
 		return nil, fmt.Errorf("dial: %w", err)
 	}
@@ -151,6 +156,14 @@ func ParseServerAddr(addr string) (net.IP, string, *StringBinding, error) {
 // ParseServerAddrWithDNSLookup function parses the server address
 // and performs the DNS lookup if required.
 func ParseServerAddrWithDNSLookup(addr string, doLookup bool) (net.IP, string, *StringBinding, error) {
+	var resolver DNSResolver
+	if doLookup {
+		resolver = net.DefaultResolver
+	}
+	return parseServerAddrWithDNSLookup(context.Background(), addr, resolver)
+}
+
+func parseServerAddrWithDNSLookup(ctx context.Context, addr string, resolver DNSResolver) (net.IP, string, *StringBinding, error) {
 
 	if ip := net.ParseIP(addr); ip != nil {
 		// this is an ip address.
@@ -161,18 +174,18 @@ func ParseServerAddrWithDNSLookup(addr string, doLookup bool) (net.IP, string, *
 
 		// this is fqdn.
 
-		if !doLookup {
+		if resolver == nil {
 			return nil, addr, nil, nil
 		}
 
-		ips, err := net.LookupIP(addr)
+		ias, err := resolver.LookupIPAddr(ctx, addr)
 		if err != nil {
 			return nil, "", nil, fmt.Errorf("lookup server address: %w", err)
 		}
 
-		for _, ip := range ips {
-			if ip.To4() != nil {
-				return ip, addr, nil, nil
+		for _, ia := range ias {
+			if ia.IP.To4() != nil {
+				return ia.IP, addr, nil, nil
 			}
 		}
 
@@ -470,7 +483,15 @@ func (t *conn) dialConn(ctx context.Context, binding StringBinding) (RawConn, er
 		dialer := t.settings.SMBDialer
 
 		if dialer == nil {
-			o, opts := ParseSecurityOptions(ctx, t.opts...), []gssapi.ContextOption{}
+			// t.opts contains all default options provided at the dcerpc.Dial level.
+			// extract all SecurityOptions and append to the default options to be used for
+			// smb dialer.
+			defaultOpts := make([]Option, len(t.opts))
+			if copy(defaultOpts, t.opts) > 0 {
+				defaultOpts = append(defaultOpts, ExtractSecurityOptions(ctx, defaultOpts...))
+			}
+
+			o, opts := ParseSecurityOptions(ctx, defaultOpts...), []gssapi.ContextOption{}
 			if o.Security != nil && o.Security.TargetName != "" {
 				opts = append(opts, gssapi.WithTargetName(o.Security.TargetName))
 			}
@@ -519,4 +540,8 @@ func (c *conn) closeTransport(ctx context.Context, tr *transport) error {
 	}
 
 	return fmt.Errorf("transport not found")
+}
+
+func (c *conn) Error(ctx context.Context, value any) error {
+	return errors.New(ctx, value)
 }
